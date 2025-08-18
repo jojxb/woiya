@@ -371,7 +371,7 @@ async def select_bid(job_id: str, bid_id: str, current_user: dict = Depends(get_
     if job["creator_id"] != current_user["id"]:
         raise HTTPException(status_code=403, detail="Only job creator can select bids")
     
-    bid = await db.bids.find_one({"id": bid_id, "job_id": job_id})
+    bid = await db.bids.find_one({"id": bid_id, "job_id": job_id}, {"_id": 0})
     if not bid:
         raise HTTPException(status_code=404, detail="Bid not found")
     

@@ -527,7 +527,7 @@ async def create_rating(rating_data: RatingCreate, current_user: dict = Depends(
         "rater_id": current_user["id"],
         "job_id": rating_data.job_id,
         "target_user_id": rating_data.target_user_id
-    })
+    }, {"_id": 0})
     if existing_rating:
         raise HTTPException(status_code=400, detail="Rating already exists")
     

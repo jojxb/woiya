@@ -274,7 +274,10 @@ async def create_job(job_data: JobCreate, current_user: dict = Depends(get_curre
     
     await db.jobs.insert_one(job_doc)
     
-    return {"message": "Job created successfully", "job_id": job_id, "job": job_doc}
+    # Return the job without MongoDB's _id field
+    job_response = {k: v for k, v in job_doc.items()}
+    
+    return {"message": "Job created successfully", "job_id": job_id, "job": job_response}
 
 @app.get("/api/jobs")
 async def get_jobs(

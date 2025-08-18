@@ -518,7 +518,7 @@ async def get_conversation(user_id: str, current_user: dict = Depends(get_curren
 @app.post("/api/ratings")
 async def create_rating(rating_data: RatingCreate, current_user: dict = Depends(get_current_user)):
     # Check if job exists and user is involved
-    job = await db.jobs.find_one({"id": rating_data.job_id})
+    job = await db.jobs.find_one({"id": rating_data.job_id}, {"_id": 0})
     if not job:
         raise HTTPException(status_code=404, detail="Job not found")
     

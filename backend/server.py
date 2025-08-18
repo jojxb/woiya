@@ -307,17 +307,17 @@ async def get_jobs(
 
 @app.get("/api/jobs/{job_id}")
 async def get_job_details(job_id: str, current_user: dict = Depends(get_current_user)):
-    job = await db.jobs.find_one({"id": job_id})
+    job = await db.jobs.find_one({"id": job_id}, {"_id": 0})
     if not job:
         raise HTTPException(status_code=404, detail="Job not found")
     
     # Get bids for this job
-    bids_cursor = db.bids.find({"job_id": job_id}).sort("created_at", -1)
+    bids_cursor = db.bids.find({"job_id": job_id}, {"_id": 0}).sort("created_at", -1)
     bids = await bids_cursor.to_list(length=None)
     
     # Add bidder information
     for bid in bids:
-        bidder = await db.users.find_one({"id": bid["bidder_id"]})
+        bidder = await db.users.find_one({"id": bid["bidder_id"]}, {"_id": 0})
         if bidder:
             bid["bidder_name"] = bidder["full_name"]
             bid["bidder_rating"] = bidder.get("rating", 0.0)

@@ -364,7 +364,7 @@ async def create_bid(job_id: str, bid_data: BidCreate, current_user: dict = Depe
 
 @app.post("/api/jobs/{job_id}/select-bid/{bid_id}")
 async def select_bid(job_id: str, bid_id: str, current_user: dict = Depends(get_current_user)):
-    job = await db.jobs.find_one({"id": job_id})
+    job = await db.jobs.find_one({"id": job_id}, {"_id": 0})
     if not job:
         raise HTTPException(status_code=404, detail="Job not found")
     

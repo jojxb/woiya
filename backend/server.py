@@ -173,7 +173,7 @@ class MockPaymentHandler:
 @app.post("/api/auth/register")
 async def register_user(user_data: UserRegister):
     # Check if user exists
-    existing_user = await db.users.find_one({"email": user_data.email})
+    existing_user = await db.users.find_one({"email": user_data.email}, {"_id": 0})
     if existing_user:
         raise HTTPException(status_code=400, detail="Email already registered")
     

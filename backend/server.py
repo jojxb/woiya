@@ -438,7 +438,7 @@ async def create_payment(payment_data: PaymentCreate, current_user: dict = Depen
 
 @app.post("/api/payments/{payment_id}/confirm")
 async def confirm_payment(payment_id: str, background_tasks: BackgroundTasks):
-    payment = await db.payments.find_one({"id": payment_id})
+    payment = await db.payments.find_one({"id": payment_id}, {"_id": 0})
     if not payment:
         raise HTTPException(status_code=404, detail="Payment not found")
     

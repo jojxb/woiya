@@ -394,7 +394,7 @@ async def create_payment(payment_data: PaymentCreate, current_user: dict = Depen
     if not job:
         raise HTTPException(status_code=404, detail="Job not found")
     
-    bid = await db.bids.find_one({"id": payment_data.bid_id})
+    bid = await db.bids.find_one({"id": payment_data.bid_id}, {"_id": 0})
     if not bid:
         raise HTTPException(status_code=404, detail="Bid not found")
     

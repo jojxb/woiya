@@ -296,7 +296,7 @@ async def get_jobs(
     else:
         filter_query["status"] = JobStatus.OPEN
     
-    cursor = db.jobs.find(filter_query).skip(skip).limit(limit).sort("created_at", -1)
+    cursor = db.jobs.find(filter_query, {"_id": 0}).skip(skip).limit(limit).sort("created_at", -1)
     jobs = await cursor.to_list(length=None)
     
     # Add bid count for each job

@@ -545,7 +545,7 @@ async def create_rating(rating_data: RatingCreate, current_user: dict = Depends(
     await db.ratings.insert_one(rating_doc)
     
     # Update user's average rating
-    ratings_cursor = db.ratings.find({"target_user_id": rating_data.target_user_id})
+    ratings_cursor = db.ratings.find({"target_user_id": rating_data.target_user_id}, {"_id": 0})
     all_ratings = await ratings_cursor.to_list(length=None)
     
     avg_rating = sum(r["rating"] for r in all_ratings) / len(all_ratings)

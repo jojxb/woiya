@@ -330,7 +330,7 @@ async def create_bid(job_id: str, bid_data: BidCreate, current_user: dict = Depe
     if current_user["role"] != UserRole.PENYEDIA_JASA:
         raise HTTPException(status_code=403, detail="Only service providers can place bids")
     
-    job = await db.jobs.find_one({"id": job_id})
+    job = await db.jobs.find_one({"id": job_id}, {"_id": 0})
     if not job:
         raise HTTPException(status_code=404, detail="Job not found")
     
@@ -338,7 +338,7 @@ async def create_bid(job_id: str, bid_data: BidCreate, current_user: dict = Depe
         raise HTTPException(status_code=400, detail="Job is not open for bidding")
     
     # Check if user already bid
-    existing_bid = await db.bids.find_one({"job_id": job_id, "bidder_id": current_user["id"]})
+    existing_bid = await db.bids.find_one({"job_id": job_id, "bidder_id": current_user["id"]}, {"_id": 0})
     if existing_bid:
         raise HTTPException(status_code=400, detail="You have already placed a bid on this job")
     

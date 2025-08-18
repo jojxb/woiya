@@ -62,9 +62,13 @@ class WOIYAMarketplaceAPITester:
         print("TESTING USER REGISTRATION")
         print("="*50)
         
+        # Use timestamp to make emails unique
+        import time
+        timestamp = str(int(time.time()))
+        
         # Register Service Seeker
         seeker_data = {
-            "email": "seeker@test.com",
+            "email": f"seeker{timestamp}@test.com",
             "password": "test123",
             "full_name": "Test Seeker",
             "phone": "081234567890",
@@ -86,7 +90,7 @@ class WOIYAMarketplaceAPITester:
         
         # Register Service Provider
         provider_data = {
-            "email": "provider@test.com",
+            "email": f"provider{timestamp}@test.com",
             "password": "test123",
             "full_name": "Test Provider",
             "phone": "081234567891",
@@ -126,6 +130,10 @@ class WOIYAMarketplaceAPITester:
             data=login_data
         )
         
+        if success and 'token' in response:
+            self.seeker_token = response['token']
+            self.seeker_user = response['user']
+        
         # Test provider login
         login_data = {
             "email": "provider@test.com",
@@ -139,6 +147,10 @@ class WOIYAMarketplaceAPITester:
             200,
             data=login_data
         )
+        
+        if success and 'token' in response:
+            self.provider_token = response['token']
+            self.provider_user = response['user']
 
     def test_user_profile(self):
         """Test getting user profile"""

@@ -510,7 +510,7 @@ async def get_conversation(user_id: str, current_user: dict = Depends(get_curren
             {"sender_id": current_user["id"], "recipient_id": user_id},
             {"sender_id": user_id, "recipient_id": current_user["id"]}
         ]
-    }).sort("created_at", 1)
+    }, {"_id": 0}).sort("created_at", 1)
     
     messages = await cursor.to_list(length=None)
     return {"messages": messages}

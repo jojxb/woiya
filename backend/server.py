@@ -595,7 +595,7 @@ async def get_dashboard_stats(current_user: dict = Depends(get_current_user)):
         completed_payments = db.payments.find({
             "receiver_id": current_user["id"],
             "status": PaymentStatus.RELEASED
-        })
+        }, {"_id": 0})
         payments = await completed_payments.to_list(length=None)
         total_earnings = sum(p["amount"] for p in payments)
         

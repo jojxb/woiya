@@ -562,7 +562,7 @@ async def get_wallet_info(current_user: dict = Depends(get_current_user)):
     # Get payment history
     payments_cursor = db.payments.find({
         "$or": [{"payer_id": current_user["id"]}, {"receiver_id": current_user["id"]}]
-    }).sort("created_at", -1).limit(20)
+    }, {"_id": 0}).sort("created_at", -1).limit(20)
     
     payments = await payments_cursor.to_list(length=None)
     

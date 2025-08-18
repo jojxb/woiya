@@ -274,8 +274,8 @@ async def create_job(job_data: JobCreate, current_user: dict = Depends(get_curre
     
     await db.jobs.insert_one(job_doc)
     
-    # Return the job without MongoDB's _id field
-    job_response = {k: v for k, v in job_doc.items()}
+    # Return the job without MongoDB's _id field - explicitly exclude it
+    job_response = {k: v for k, v in job_doc.items() if k != "_id"}
     
     return {"message": "Job created successfully", "job_id": job_id, "job": job_response}
 

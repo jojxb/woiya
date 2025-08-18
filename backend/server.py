@@ -390,7 +390,7 @@ async def select_bid(job_id: str, bid_id: str, current_user: dict = Depends(get_
 
 @app.post("/api/payments/create")
 async def create_payment(payment_data: PaymentCreate, current_user: dict = Depends(get_current_user)):
-    job = await db.jobs.find_one({"id": payment_data.job_id})
+    job = await db.jobs.find_one({"id": payment_data.job_id}, {"_id": 0})
     if not job:
         raise HTTPException(status_code=404, detail="Job not found")
     

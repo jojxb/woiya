@@ -214,7 +214,7 @@ async def register_user(user_data: UserRegister):
 
 @app.post("/api/auth/login")
 async def login_user(login_data: UserLogin):
-    user = await db.users.find_one({"email": login_data.email})
+    user = await db.users.find_one({"email": login_data.email}, {"_id": 0})
     if not user or not verify_password(login_data.password, user["password"]):
         raise HTTPException(status_code=401, detail="Invalid credentials")
     

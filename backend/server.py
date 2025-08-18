@@ -457,7 +457,7 @@ async def confirm_payment(payment_id: str, background_tasks: BackgroundTasks):
 
 @app.post("/api/payments/{payment_id}/release")
 async def release_payment(payment_id: str, current_user: dict = Depends(get_current_user)):
-    payment = await db.payments.find_one({"id": payment_id})
+    payment = await db.payments.find_one({"id": payment_id}, {"_id": 0})
     if not payment:
         raise HTTPException(status_code=404, detail="Payment not found")
     
